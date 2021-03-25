@@ -6,29 +6,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApplication1.Controllers
+namespace MortgageGeneratorWeb.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class MortgageController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly MortgageGenerator mortgageGenerator;
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<MortgageController> _logger;
 
-        public MortgageController(ILogger<WeatherForecastController> logger)
+        public MortgageController(ILogger<MortgageController> logger, MortgageGenerator mortgageGenerator)
         {
             _logger = logger;
+            this.mortgageGenerator = mortgageGenerator;
         }
 
-        //[HttpGet]
-        //public MortgageController Get()
-        //{
-            
-            
-        //}
+        [HttpPost]
+        public async Task<JsonResult> Compute([FromBody] MortgageInfoDTO mortgageInfoDTO)
+        {
+            _logger.LogInformation($"Received ");
+            return new JsonResult((await mortgageGenerator.GenerateMortgage(mortgageInfoDTO.BorrowedAmount,
+                                                                            mortgageInfoDTO.DurationMonths,
+                                                                            mortgageInfoDTO.RatePercent)).Terms.Select(t => new
+                                                                            {
+                                                                                Interest = (decimal)t.Interest,
+                                                                                TotalAmount = (decimal)t.TotalAmount,
+                                                                                AmortizedCapital = (decimal)t.AmortizedCapital,
+                                                                                RemainingCapital = (decimal)t.RemainingCapital
+                                                                            }));
+        }
     }
 }

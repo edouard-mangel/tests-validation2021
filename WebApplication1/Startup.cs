@@ -2,13 +2,12 @@ using Domain;
 using Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace WebApplication1
+namespace MortgageGeneratorWeb
 {
     public class Startup
     {
@@ -28,10 +27,14 @@ namespace WebApplication1
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            AddScopedServices(services);
+        }
 
-
-            services.AddScoped<IMortgageRepository, MortgageRepository>();
-
+        public virtual void AddScopedServices(IServiceCollection services)
+        {
+            services.AddScoped<MortgageGenerator>();
+            //services.AddScoped<IMortgageRepository, MortgageRepository>();
+            services.AddScoped<IMortgageRepository, Temporary.InMemoryMortgageRepository>();
 
         }
 

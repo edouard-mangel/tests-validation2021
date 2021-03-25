@@ -1,4 +1,6 @@
-﻿namespace Domain
+﻿using System.Threading.Tasks;
+
+namespace Domain
 {
     public class MortgageGenerator
     {
@@ -9,12 +11,12 @@
             this.mortgageRepository = mortgageRepository;
         }
 
-        public Mortgage GenerateMortgage(Amount borrowedAmount, int durationMonths, decimal interestsPercent)
+        public async Task<Mortgage> GenerateMortgage(Amount borrowedAmount, int durationMonths, decimal interestsPercent)
         {
             Mortgage newMortgage = new Mortgage(borrowedAmount, durationMonths, interestsPercent);
             newMortgage.GenerateAmortizationTable();
             
-            this.mortgageRepository.Save(newMortgage);
+            await this.mortgageRepository.Save(newMortgage);
 
             return newMortgage;
         }

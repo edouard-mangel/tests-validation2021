@@ -12,7 +12,7 @@ namespace Domain
             this.BorrowedAmount = amount;
             this.Duration = duration;
             this.InterestRateInPercent = rate;
-            this.Terms = new AmortizationTable(new List<Term>());
+            this.Terms = new List<Term>();
         }
 
         public Amount ComputeMensuality()
@@ -38,7 +38,7 @@ namespace Domain
                 Amount interest = remainingCapital * PeriodicRate;
                 Amount amortizedCapital = mensuality - interest;
                 remainingCapital -= amortizedCapital;
-                this.Terms.AddTerm(new Term(mensuality, interest, amortizedCapital, remainingCapital));
+                this.Terms.Add(new Term(mensuality, interest, amortizedCapital, remainingCapital));
             };
             return remainingCapital;
         }
@@ -46,7 +46,7 @@ namespace Domain
         private void GenerateLastTerm(decimal remainingCapital)
         {
             decimal interestLastPeriod = remainingCapital * PeriodicRate;
-            this.Terms.AddTerm(new Term(remainingCapital + interestLastPeriod, interestLastPeriod, remainingCapital, remainingCapital));
+            this.Terms.Add(new Term(remainingCapital + interestLastPeriod, interestLastPeriod, remainingCapital, remainingCapital));
         }
 
         public void SetDuration(int duration)
@@ -56,8 +56,7 @@ namespace Domain
 
         public Amount BorrowedAmount { get; }
         public int Duration { get; private set; }
-        public AmortizationTable Terms { get; private set; } 
+        public List<Term> Terms { get; private set; } 
         public decimal InterestRateInPercent { get; private set; }
-
     }
 }

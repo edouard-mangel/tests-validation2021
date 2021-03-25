@@ -1,8 +1,10 @@
-﻿namespace Domain
+﻿using System.Threading.Tasks;
+
+namespace Domain
 {
     public interface IMortgageRepository
     {
-        void Save(Mortgage m);
-        Mortgage ById(int id);
+        Task Save(Mortgage m);
+        Task<Mortgage> ById(int id);
     }
 }

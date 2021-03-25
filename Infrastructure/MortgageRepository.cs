@@ -1,17 +1,18 @@
 ﻿using Domain;
 using System;
+using System.Threading.Tasks;
 
 namespace Infrastructure
 {
     public class MortgageRepository : IMortgageRepository
     {
-        public Mortgage ById(int id)
+        public Task<Mortgage> ById(int id)
         {
             // todo connect Database. 
             throw new NotImplementedException();
         }
 
-        public void Save(Mortgage m)
+        public Task Save(Mortgage m)
         {
             // todo connect Database. 
             throw new NotImplementedException();

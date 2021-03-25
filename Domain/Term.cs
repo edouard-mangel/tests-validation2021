@@ -9,8 +9,8 @@
 
         public Term(Amount totalAmount, Amount interest, Amount amortizedCapital, Amount remainingCapital)
         {
-            this.Interest = interest;
-            this.TotalAmount = totalAmount;
+            this.Interest           = interest;
+            this.TotalAmount        = totalAmount;
             this.AmortizedCapital = amortizedCapital;
             this.RemainingCapital = remainingCapital;
         }
